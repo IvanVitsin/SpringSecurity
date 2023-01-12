@@ -1,6 +1,8 @@
 package Ivan.Vitsin.springsecurity.controller;
 
+import Ivan.Vitsin.springsecurity.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,6 @@ public class UsersController {
 
     private final UserService userService;
 
-    @Autowired
     public UsersController (UserService userService) {
         this.userService = userService;
     }
@@ -26,8 +27,8 @@ public class UsersController {
     }
 
     @GetMapping("/user")
-    public String getCurrentUserInfo(Model model) {
-        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+    public String getCurrentUserInfo(Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("user", user);
         return "/user/user";
     }
 
